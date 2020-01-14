@@ -7,6 +7,7 @@ from collections import defaultdict
 import re
 import six
 import yaml
+import datetime
 
 from .errors import (
     MissingMandatoryValue,
@@ -466,6 +467,8 @@ class Config(object):
             resolver = OmegaConf.get_resolver(inter_type)
             if resolver is not None:
                 value = resolver(root_node, inter_key)
+            elif inter_type == 'now':
+                value = datetime.datetime.now().strftime(inter_key)
             else:
                 raise UnsupportedInterpolationType(
                     "Unsupported interpolation type {}".format(inter_type)
